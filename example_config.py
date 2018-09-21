@@ -10,11 +10,11 @@ class Config:
 class Development(Config):
     DEBUG = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'clave'
-    ENVIROMENT = 'Development'
+    ENV = 'Development'
 
 class Testing(Config):
     TESTING = True
-    ENVIROMENT = 'Testing'
+    ENV = 'Testing'
  
 class Production(Config):
     pass    
