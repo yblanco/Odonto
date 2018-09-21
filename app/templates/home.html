@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="login-page">
+	<div class="container d-flex align-items-center">
+		<div class="form-holder has-shadow">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="info d-flex align-items-center">
+						<div class="content">
+							<div class="logo">
+								<h1>Bienvenido(a)</h1>
+							</div>
+							<p>Sistemas de control de Citas Odontológicas</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 bg-white">
+					<div class="form d-flex align-items-center">
+						<div class="content">
+							{% block content %}
+							{% endblock %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="copyrights text-center text-muted">
+        <p>Design by <a href="https://bootstrapious.com" class="external">Bootstrapious</a></p>
+        <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+     </div>
+</div>
+{% endblock %}
