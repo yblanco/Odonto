@@ -1,5 +1,5 @@
 {% extends "home.html" %}
 {% block content %}
 <p> Debe iniciar sesión para continuar.</p>
-<a id="login" href="{{ url_for('home.index') }}" class="btn btn-primary">Iniciar Sesión</a>
+<a id="login" href="{{ url_for('auth.login') }}" class="btn btn-primary">Iniciar Sesión</a>
 {% endblock %}
