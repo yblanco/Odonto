@@ -4,12 +4,17 @@ import os
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    PORT = 3002
+    HOST = '0.0.0.0'
  
 class Development(Config):
     DEBUG = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'clave'
+    ENVIROMENT = 'Development'
+
 class Testing(Config):
     TESTING = True
+    ENVIROMENT = 'Testing'
  
 class Production(Config):
     pass    
