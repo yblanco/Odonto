@@ -21,10 +21,11 @@
 			<div class="navbar-header">
 				<a href="{{ url_for('home.home_page') }}" class="navbar-brand">
 					<div class="brand-text brand-big visible text-uppercase">
-						<strong class="text-primary">Dark</strong><strong>Admin</strong>
+						<strong class="text-primary">Sistema</strong> <strong>de Citas</strong>
 					</div>
 					<div class="brand-text brand-sm">
-						<strong class="text-primary">D</strong><strong>A</strong>
+						<strong class="text-primary">S</strong><strong>C</strong>
+						<!-- <img src="{{ url_for('home.static', filename='img/logo.png') }}" alt="..."> -->
 					</div>
 				</a>
 				<button class="sidebar-toggle"><i class="fa fa-long-arrow-left"></i></button>
@@ -41,8 +42,8 @@
 				<!-- End Icon Search -->
 				<!-- Log out -->
 				<div class="list-inline-item logout">                   
-					<a id="logout" href="#" class="nav-link">
-						Iniciar Sesión <i class="icon-user"></i>
+					<a id="logout" href="{{ url_for('auth.logout') }}" class="nav-link">
+						Cerrar Sesión <i class="icon-logout"></i>
 					</a>
 				</div>
 				<!-- End Log out-->
@@ -54,18 +55,55 @@
 </header>
 <div class="d-flex align-items-stretch">
 	<nav id="sidebar">
+		<!-- Sidebar Header-->
+		<div class="sidebar-header d-flex align-items-center">
+			<div class="avatar"><img src="{{ url_for('home.static', filename='img/users/') }}{{ current_user.image }}" alt="{{ current_user.name }}" class="img-fluid rounded-circle"></div>
+			<div class="title">
+				<h1 class="h5">{{ current_user }}</h1>
+				<p>{{ current_user.username }}</p>
+			</div>
+		</div>
+		<hr>
+		<div class="d-flex  justify-content-center">
+			<a href="{{ url_for('auth.profile') }}" class="item"> Editar Perfil</a>
+		</div>
+		<hr>
 
 	</nav>
 
 	<div class="page-content">
-		{% block content %}{% endblock %}
-
+		<div class="page-header">
+			<div class="container-fluid">
+				<h2 class="h5 no-margin-bottom">{{ title }}</h2>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<ul class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{{ url_for('home.index') }}">DashBoard</a></li>
+				{% block bread%}
+				{% endblock %}
+			</ul>
+		</div>
+		<div class="container-fluid">
+		{% for category, message in get_flashed_messages(with_categories=true)  %}
+		<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+			{{ message }}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+		{% endfor %}
+		</div>
+		<div class="container-fluid">
+			{% block content %}{% endblock %}
+		</div>
 		<footer class="footer">
 			<div class="footer__block block no-margin-bottom">
 				<div class="container-fluid text-center">
 					<!-- Please do not remove the backlink to us unless you support us at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-              		<p class="no-margin-bottom">
-              			2018 &copy; Odonto. Design by <a href="https://bootstrapious.com">Bootstrapious</a>.</p>
+					<p class="no-margin-bottom">
+						2018 &copy; Odonto. Design by <a href="https://bootstrapious.com">Bootstrapious</a>.
+					</p>
 				</div>
 			</div>
 		</footer>

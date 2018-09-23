@@ -10,5 +10,8 @@
 		<label for="login-password" class="label-material">Contraseña</label>
 	</div>
 	<button type="submit" id="login" class="btn btn-primary">Iniciar Sesión</button>
-	</form>
-	{% endblock %}
+</form>
+{% if not ifadmin %}
+	<a href="{{ url_for('auth.admin') }}" class="btn btn-secondary">Crear Usuario Administrador</a>
+{% endif %}
+{% endblock %}
