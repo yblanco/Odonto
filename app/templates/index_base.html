@@ -21,10 +21,10 @@
 			<div class="navbar-header">
 				<a href="{{ url_for('home.home_page') }}" class="navbar-brand">
 					<div class="brand-text brand-big visible text-uppercase">
-						<strong class="text-primary">Sistema</strong> <strong>de Citas</strong>
+						<strong class="text-primary">Sistema</strong> <strong>Clínico Odontológico</strong>
 					</div>
 					<div class="brand-text brand-sm">
-						<strong class="text-primary">S</strong><strong>C</strong>
+						<strong class="text-primary">S</strong><strong>CO</strong>
 						<!-- <img src="{{ url_for('home.static', filename='img/logo.png') }}" alt="..."> -->
 					</div>
 				</a>
@@ -40,6 +40,16 @@
 					</a>
 				</div>
 				<!-- End Icon Search -->
+				<div class="list-inline-item dropdown">
+					<a id="settings" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle">
+						<i class="icon icon-settings"></i><span class="d-none d-sm-inline-block">Configuración</span>
+					</a>
+					<div aria-labelledby="settings" class="dropdown-menu">
+						<a rel="nofollow" href="{{ url_for('auth.users') }}" class="dropdown-item"> 
+							<i class="icon icon-user-outline"></i><span>Usuarios</span>
+						</a>
+					</div>
+				</div>
 				<!-- Log out -->
 				<div class="list-inline-item logout">                   
 					<a id="logout" href="{{ url_for('auth.logout') }}" class="nav-link">
@@ -61,13 +71,48 @@
 			<div class="title">
 				<h1 class="h5">{{ current_user }}</h1>
 				<p>{{ current_user.username }}</p>
+				<a href="{{ url_for('auth.profile') }}"> Editar Perfil <i class="icon icon-new-file"></i></a>
 			</div>
 		</div>
 		<hr>
-		<div class="d-flex  justify-content-center">
-			<a href="{{ url_for('auth.profile') }}" class="item"> Editar Perfil</a>
-		</div>
-		<hr>
+
+		<ul class="list-unstyled">
+			<li {% if request.path ==  url_for('home.index') %}class="active" {% endif %}>
+				<a href="{{ url_for('home.index') }}"> 
+					<i class="icon-home"></i>Dashboard 
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-padnote"></i>Citas
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-grid"></i>Horarios
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-user-1"></i>Doctores
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-writing-whiteboard"></i>Salas
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-user"></i>Pacientes
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-paper-and-pencil"></i>Historias Clínicas
+				</a>
+			</li>
+		</ul>
 
 	</nav>
 
@@ -85,14 +130,14 @@
 			</ul>
 		</div>
 		<div class="container-fluid">
-		{% for category, message in get_flashed_messages(with_categories=true)  %}
-		<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-			{{ message }}
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    			<span aria-hidden="true">&times;</span>
-  			</button>
-		</div>
-		{% endfor %}
+			{% for category, message in get_flashed_messages(with_categories=true)  %}
+			<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+				{{ message }}
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			{% endfor %}
 		</div>
 		<div class="container-fluid">
 			{% block content %}{% endblock %}

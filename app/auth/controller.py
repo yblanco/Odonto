@@ -27,6 +27,14 @@ class authController(object):
     		
     	return render_template('login.html', ifadmin=USERS.existAdmin())
 
+
+    def generateAdmin(self):
+        if current_user.is_authenticated:
+            return redirect(url_for('home.index'))
+
+        return render_template('admin.html', result = USERS.createAdmin())
+
+
     def logout(self):
         logout_user()
         flash('Sesión Finalizada', 'info')
@@ -36,7 +44,7 @@ class authController(object):
         if request.method == 'POST':
             name = request.form.get('name')
             last_name = request.form.get('last_name')
-            if current_user.updateUser(name, last_name, current_user.id_user):
+            if current_user.updateProfile(name, last_name, current_user.id_user):
                 flash('Guardado', 'success')
             else:
                 flash('Error al guardar', 'danger')
@@ -62,7 +70,7 @@ class authController(object):
                         if allowed_file:
                             try:
                                 path = os.getcwd()+'/app/'+url_for('home.static', filename='img/users/')
-                                filenewname = str(current_user.id)+"_"+str(str(time.time()).split('.')[0])+"."+filename.split('.')[-1]
+                                filenewname = str(current_user.id)+"_"+USERS.randomString()+"."+filename.split('.')[-1]
                                 file.save(os.path.join(path, filenewname))
                                 if USERS.updateImg(filenewname, current_user.id_user):
                                     flash('Imagen subida', 'success')
@@ -81,7 +89,7 @@ class authController(object):
                 else:
                     flash('Error de Ruta', 'danger')
             except Exception as e:
-                print 'ERROR auth.controller.image: ', e
+                print 'ERROR auth.controller.image: ', str(e)
             finally:
                 return redirect(url_for('auth.profile'))
 
@@ -107,15 +115,78 @@ class authController(object):
             flash('Error de Ruta', 'danger')
         return redirect(url_for('auth.profile'))
 
-            
+    def users(self):
+        return render_template('users.html', title='Usuarios', users=USERS.users())
+
+    def user(self):
+        formdata = dict()
+        if request.method == 'POST':
+            try:
+                formdata = request.form
+                name = request.form.get('name')
+                last_name = request.form.get('last_name')
+                mail = request.form.get('mail')
+                username = request.form.get('username')
+                password = request.form.get('password')
+                password_confirm = request.form.get('password_confirm')
+                if password != '':
+                    if password == password_confirm:
+                        result = USERS.newUser(name, last_name, mail, username, password)
+                        if result['result'] is True:
+                            flash('Usuario guardado', 'success')
+                            return  redirect(url_for('auth.user_edit', id_user= result['id_user']))
+                        else:
+                            flash(result['msg'], 'danger')
+                    else:
+                        flash('No coinciden las contraseñas', 'danger')
+                else:
+                    flash('Indique una contraseña', 'danger')
+
+            except Exception as e:
+                flash('Error al guardar el usuario', 'danger')
+                print 'ERROR auth.controller.user: ', str(e)
+        return render_template('user.html', title='Nuevo Usuario', form=formdata, edit=False, user = False)
+
+    def user_edit(self,user_id):
+        user = USERS.query.get(user_id)
+        formdata = dict()
+        if request.method == 'POST':
+            try:
+                formdata = request.form
+                name = request.form.get('name')
+                last_name = request.form.get('last_name')
+                mail = request.form.get('mail')
+                username = request.form.get('username')
+                password = request.form.get('password')
+                password_confirm = request.form.get('password_confirm')
+                password_new = False
+                if password_confirm != '' and  password != '':
+                    password_new = password
+
+                if password_new != False and password != password_confirm:
+                    flash('Contraseñas no coinciden', 'danger')
+                    raise Exception('Contraseñas no coinciden')
+                else:
+                    result = USERS.updateUser(user_id, name, last_name, password_new)
+                    if result['result'] is True:
+                        flash('Usuario actualizado', 'success')
+                        return  redirect(url_for('auth.user_edit', id_user= user_id))
+                    else:
+                        flash(result['msg'], 'danger')
+
+            except Exception as e:
+                flash('Error al actualizar el usuario', 'danger')
+                print 'ERROR auth.controller.user: ', str(e)
+
+        return render_template('user.html', title='Editar Usuario '+user.username, user=user, form=formdata, edit=True)
 
 
-    def generateAdmin(self):
-        if current_user.is_authenticated:
-            return redirect(url_for('home.index'))
-
-        return render_template('admin.html', result = USERS.createAdmin())
-    	
+    def user_status(self,id_user,id):
+        if(USERS.updateStatus(id_user,id)):
+            flash('Estatus Actualizado', 'success')
+        else:
+            flash('No se pudo Actualizar', 'danger')
+        return redirect(url_for('auth.users'))
 
 @login_manager.user_loader
 def load_user(user_id):

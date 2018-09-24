@@ -1,0 +1,80 @@
+{% extends "index_base.html" %}
+{% block bread%}
+<li class="breadcrumb-item">Configuración</li>
+<li class="breadcrumb-item"><a href="{{ url_for('auth.users') }}">Usuarios</a></li>
+<li class="breadcrumb-item active">Usuarios</li>
+{% endblock %}
+{% block content %}
+<form method="POST" class="form-validate">
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="block">
+				<div class="title">
+					<strong class="d-block">Datos Personales</strong>
+					<span class="d-block">Datos personales del usuario</span>
+				</div>
+				<div class="block-body">
+					<div class="form-group">
+						<label class="form-control-label">Nombre</label>
+						<input type="text" placeholder="Nombre" class="form-control" name="name" required data-msg="Nombre es requerido" value="{{ form.get('name') or user.name or '' }}" >
+					</div>
+					<div class="form-group">       
+						<label class="form-control-label">Apellidos</label>
+						<input type="text" placeholder="Apellidos" class="form-control" name="last_name" required data-msg="Apellido es requerido" value="{{ form.get('last_name') or user.last_name or  '' }}">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="block">
+				<div class="title">
+					<strong class="d-block">Datos de la Cuenta</strong>
+					<span class="d-block">Datos de la cuenta del usuario</span>
+				</div>
+				<div class="block-body">
+					<div class="form-group">
+						<label class="form-control-label">Correo Electrónico</label>
+						<input type="mail" placeholder="Correo Electrónico" class="form-control" name="mail" required data-msg="Correo Electrónico es requerido"  {{'readonly' if edit else ''}} value="{{ form.get('mail') or user.mail or '' }}">
+					</div>
+					<div class="form-group">       
+						<label class="form-control-label">Nombre de usuario</label>
+						<input type="text" placeholder="Nombre de usuario" class="form-control" name="username" required data-msg="Nombre de usuario es requerido" {{'readonly' if edit else ''}} value="{{ form.get('username') or user.username or  '' }}">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="block">
+				<div class="title">
+					<strong class="d-block">Seguridad</strong>
+					<span class="d-block">Seguridad de la cuenta</span>
+					{% if edit %}
+					<span>Si no desea modificar la contraseña por favor déjela en blanco</span>
+					{% endif %}
+				</div>
+				<div class="block-body">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">       
+								<label class="form-control-label">Contraseña</label>
+								<input type="password" placeholder="Contraseña" class="form-control" {{ ''if edit else 'required data-msg="Contraseña es requerida"' }} name="password" value="">
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">       
+								<label class="form-control-label">Confirmar Contraseña</label>
+								<input type="password" placeholder="Contraseña" class="form-control" name="password_confirm" {{'' if edit else 'required data-msg="Confirmar Contraseña es requerido"'}} value="">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="block">
+				<input type="submit" value="{{ 'Guardar' if edit else 'Crear'}} Usuario" class="btn btn-block btn-primary">
+			</div>
+		</div>
+	</div>
+</form>
+{% endblock %}

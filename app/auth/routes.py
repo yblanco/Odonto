@@ -17,15 +17,39 @@ def logout():
 def admin():
 	return controller.generateAdmin()
 
-@login_required
 
 @auth.route('/profile', methods=['GET', 'POST'])
+@login_required
 def profile():
 	return controller.profile()
-@auth.route('profileImg', methods=['POST'])
+
+@auth.route('/profileImg', methods=['POST'])
+@login_required
 def image():
 	return controller.image()
 
-@auth.route('password', methods=['POST'])
+@auth.route('/password', methods=['POST'])
+@login_required
 def password():
 	return controller.password()
+
+@auth.route('/users', methods=['GET'])
+@login_required
+def users():
+	return controller.users()
+
+@auth.route('/user', methods=['GET','POST'])
+@login_required
+def user():
+	return controller.user()
+
+@auth.route('/user/<id_user>', methods=['GET','POST'])
+@login_required
+def user_edit(id_user):
+	return controller.user_edit(id_user)
+
+@auth.route('/user/<id_user>/<id>', methods=['GET'])
+@login_required
+def user_status(id_user, id):
+	return controller.user_status(id_user, id)
+
