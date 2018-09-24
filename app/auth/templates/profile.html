@@ -1,0 +1,92 @@
+{% extends "index_base.html" %}
+{% block bread%}
+<li class="breadcrumb-item active">Perfil</li>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-lg-6">
+		<div class="block">
+			<div class="title">
+				<strong class="d-block">Datos Personales</strong>
+				<span class="d-block">Datos personales del usuario con sesión activa</span>
+			</div>
+			<div class="block-body">
+				<form method="POST" action="{{ url_for('auth.profile') }}">
+					<div class="form-group">
+						<label class="form-control-label">Nombre</label>
+						<input type="text" placeholder="Nombre" class="form-control" name="name" value="{{ current_user.name }}">
+					</div>
+					<div class="form-group">       
+						<label class="form-control-label">Apellidos</label>
+						<input type="text" placeholder="Apellidos" class="form-control" name="last_name" value="{{ current_user.last_name }}">
+					</div>
+					<div class="form-group">       
+						<input type="submit" value="Guardar Datos Personales" class="btn btn-block btn-primary">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-6">
+		<div class="block">
+			<div class="title">
+				<strong class="d-block">Imagen de Perfil</strong>
+				<span class="d-block">Imagen de perfil del usuario con sesión activa</span>
+			</div>
+			<div class="block-body">
+				<form method="POST" action="{{ url_for('auth.image') }}" enctype="multipart/form-data">
+					<div class="form-group">
+						<input type="file" placeholder="Nombre" class="form-control" name="file" >
+					</div>
+					<div class="form-group">       
+						<input type="submit" value="Guardar Imagen" class="btn btn-block btn-primary">
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<div class="block">
+			<div class="block-body text-center">
+				<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-block btn-primary">
+					Cambiar Contraseña
+				</button>
+				<!-- Modal-->
+				<div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+					<div role="document" class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<strong id="exampleModalLabel" class="modal-title">Cambiar Contraseña</strong>
+								<button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+							</div>
+							<div class="modal-body">
+								<p>Cambiar la Contraseña del Usuario</p>
+								<form method="POST" action="{{ url_for('auth.password') }}">
+									<div class="form-group">
+										<label>Contraseña Actual</label>
+										<input type="password" placeholder="Contraseña Actual" name="password" class="form-control">
+									</div>
+									<div class="form-group">       
+										<label>Nueva Contraseña</label>
+										<input type="password" placeholder="Nueva Contraseña" name="newpassword" class="form-control">
+									</div>
+									<div class="form-group">       
+										<label>Confirmar Nueva Contraseña</label>
+										<input type="password" placeholder="Nueva Contraseña" name="newpasswordconfirm" class="form-control">
+									</div>
+									<div class="form-group">       
+										<input type="submit" value="Cambiar Contraseña" class="btn btn-block btn-primary">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

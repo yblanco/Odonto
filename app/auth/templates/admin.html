@@ -1,0 +1,15 @@
+{% extends "home.html" %}
+{% block content %}
+<p>{{ result.msg }}</p>
+{% if result.result %}
+<p>
+	<strong>Usuario</strong>: <br>{{ result.username }}
+</p>
+<p>
+	<strong>Contraseña</strong>: <br>{{ result.password }}
+</p>
+{% endif %}
+<a id="login" href="{{ url_for('auth.login') }}" class="btn btn-primary">Iniciar Sesión</a>
+
+
+{% endblock %}

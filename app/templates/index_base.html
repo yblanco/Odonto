@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block body %}
+<header class="header">   
+	<nav class="navbar navbar-expand-lg">
+		<!-- search Panel -->
+		<div class="search-panel">
+			<div class="search-inner d-flex align-items-center justify-content-center">
+				<div class="close-btn">Cerrar <i class="fa fa-close"></i></div>
+				<form id="searchForm" action="#">
+					<div class="form-group">
+						<input type="search" name="search" placeholder="¿Qué estás buscando?">
+						<button type="submit" class="submit">Buscar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- End search Panel -->
+		<!-- Right Menu -->
+		<div class="container-fluid d-flex align-items-center justify-content-between">
+			<!-- Navbar Header-->
+			<div class="navbar-header">
+				<a href="{{ url_for('home.home_page') }}" class="navbar-brand">
+					<div class="brand-text brand-big visible text-uppercase">
+						<strong class="text-primary">Sistema</strong> <strong>Clínico Odontológico</strong>
+					</div>
+					<div class="brand-text brand-sm">
+						<strong class="text-primary">S</strong><strong>CO</strong>
+						<!-- <img src="{{ url_for('home.static', filename='img/logo.png') }}" alt="..."> -->
+					</div>
+				</a>
+				<button class="sidebar-toggle"><i class="fa fa-long-arrow-left"></i></button>
+			</div>
+			<!-- End Navbar Header-->
+			<!-- Icon right -->
+			<div class="right-menu list-inline no-margin-bottom">    
+				<!-- Icon Search -->
+				<div class="list-inline-item">
+					<a href="#" class="search-open nav-link">
+						<i class="icon-magnifying-glass-browser"></i>
+					</a>
+				</div>
+				<!-- End Icon Search -->
+				<div class="list-inline-item dropdown">
+					<a id="settings" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle">
+						<i class="icon icon-settings"></i><span class="d-none d-sm-inline-block">Configuración</span>
+					</a>
+					<div aria-labelledby="settings" class="dropdown-menu">
+						<a rel="nofollow" href="{{ url_for('auth.users') }}" class="dropdown-item"> 
+							<i class="icon icon-user-outline"></i><span>Usuarios</span>
+						</a>
+					</div>
+				</div>
+				<!-- Log out -->
+				<div class="list-inline-item logout">                   
+					<a id="logout" href="{{ url_for('auth.logout') }}" class="nav-link">
+						Cerrar Sesión <i class="icon-logout"></i>
+					</a>
+				</div>
+				<!-- End Log out-->
+			</div>
+			<!-- End icon right -->
+		</div>
+		<!-- End Right Menu -->
+	</nav>
+</header>
+<div class="d-flex align-items-stretch">
+	<nav id="sidebar">
+		<!-- Sidebar Header-->
+		<div class="sidebar-header d-flex align-items-center">
+			<div class="avatar"><img src="{{ url_for('home.static', filename='img/users/') }}{{ current_user.image }}" alt="{{ current_user.name }}" class="img-fluid rounded-circle"></div>
+			<div class="title">
+				<h1 class="h5">{{ current_user }}</h1>
+				<p>{{ current_user.username }}</p>
+				<a href="{{ url_for('auth.profile') }}"> Editar Perfil <i class="icon icon-new-file"></i></a>
+			</div>
+		</div>
+		<hr>
+
+		<ul class="list-unstyled">
+			<li {% if request.path ==  url_for('home.index') %}class="active" {% endif %}>
+				<a href="{{ url_for('home.index') }}"> 
+					<i class="icon-home"></i>Dashboard 
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-padnote"></i>Citas
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-grid"></i>Horarios
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-user-1"></i>Doctores
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-writing-whiteboard"></i>Salas
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-user"></i>Pacientes
+				</a>
+			</li>
+			<li>
+				<a href="#"> 
+					<i class="icon-paper-and-pencil"></i>Historias Clínicas
+				</a>
+			</li>
+		</ul>
+
+	</nav>
+
+	<div class="page-content">
+		<div class="page-header">
+			<div class="container-fluid">
+				<h2 class="h5 no-margin-bottom">{{ title }}</h2>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<ul class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{{ url_for('home.index') }}">DashBoard</a></li>
+				{% block bread%}
+				{% endblock %}
+			</ul>
+		</div>
+		<div class="container-fluid">
+			{% for category, message in get_flashed_messages(with_categories=true)  %}
+			<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+				{{ message }}
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="container-fluid">
+			{% block content %}{% endblock %}
+		</div>
+		<footer class="footer">
+			<div class="footer__block block no-margin-bottom">
+				<div class="container-fluid text-center">
+					<!-- Please do not remove the backlink to us unless you support us at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+					<p class="no-margin-bottom">
+						2018 &copy; Odonto. Design by <a href="https://bootstrapious.com">Bootstrapious</a>.
+					</p>
+				</div>
+			</div>
+		</footer>
+	</div>
+</div>
+{% endblock %}

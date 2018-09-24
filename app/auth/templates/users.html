@@ -1,0 +1,64 @@
+{% extends "index_base.html" %}
+{% block bread%}
+<li class="breadcrumb-item">Configuración</li>
+<li class="breadcrumb-item active">Usuarios</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-12">
+		<div class="block margin-bottom-sm">
+			<div class="title">
+				<strong>Listado de Usuarios</strong> 
+				<a href="{{ url_for('auth.user') }}" class="text-info" data-toggle="tooltip" title="Nuevo Usuario">
+					<i class="fa fa-plus-circle"></i>
+				</a>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nombre</th>
+							<th>Apellido</th>
+							<th>Usuarios</th>
+							<th>Opciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for user in users %}
+							<tr>
+								<td scope="row">{{user.id_user}}</td>
+								<td>{{user.name}}</td>
+								<td>{{user.last_name}}</td>
+								<td>{{user.username}}</td>
+								<td>
+									<a href="{{ url_for('auth.user_edit', id_user=user.id_user) }}"" class="text-info"  data-toggle="tooltip" title="Editar">
+										<i class="fa fa-edit"></i>
+									</a>
+									{% if user.status_name.id == 0 %}
+										<a href="{{ url_for('auth.user_status', id_user=user.id_user, id=2) }}" class="text-info" data-toggle="tooltip" title="Bloquear">
+											<i class="fa fa-ban"></i>
+										</a>
+									{% elif user.status_name.id  == 1 %}
+										<a href="{{ url_for('auth.user_status', id_user=user.id_user, id=0) }}" class="text-info" data-toggle="tooltip" title="Activar">
+											<i class="fa fa-user-plus"></i>
+										</a>
+									{% elif user.status_name.id  == 2 %}
+										<a href="{{ url_for('auth.user_status', id_user=user.id_user, id=0) }}" class="text-info" data-toggle="tooltip" title="Desbloquear">
+											<i class="fa fa-check-circle"></i>
+										</a>
+									{% endif %}
+									
+									
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table> 
+			</div>	
+		</div>
+	</div>
+</div>
+
+{% endblock %}
