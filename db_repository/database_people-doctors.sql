@@ -1,4 +1,12 @@
-
+DROP TABLE IF EXISTS doctors;
+DROP TABLE IF EXISTS patients;
+DROP TABLE IF EXISTS people;
+DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS districts;
+DROP TABLE IF EXISTS provinces;
+DROP TABLE IF EXISTS regions;
+DROP TABLE IF EXISTS contacts;
+DROP TABLE IF EXISTS types;
 # Create tables
 CREATE TABLE IF NOT EXISTS people
 (
@@ -40,11 +48,12 @@ CREATE TABLE IF NOT EXISTS provinces
     id_province INT unsigned NOT NULL AUTO_INCREMENT,
     id CHARACTER(6),
     name VARCHAR(50),
-    region_id INT unsigned,
+    region_id CHARACTER(6),
     status enum('ENABLE','DISABLE') NOT NULL DEFAULT 'ENABLE',
     updated_at DATETIME,
     created_at DATETIME,
-    PRIMARY KEY(id_province)
+    PRIMARY KEY(id_province),
+    UNIQUE KEY(id)
 ) ENGINE=innodb  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS districts
@@ -52,12 +61,13 @@ CREATE TABLE IF NOT EXISTS districts
     id_disrtict INT unsigned NOT NULL AUTO_INCREMENT,
     id CHARACTER(6),
     name VARCHAR(50),
-    region_id INT unsigned,
-    province_id INT unsigned,
+    region_id CHARACTER(6),
+    province_id CHARACTER(6),
     status enum('ENABLE','DISABLE') NOT NULL DEFAULT 'ENABLE',
     created_at DATETIME,
     updated_at DATETIME,
-    PRIMARY KEY(id_disrtict)
+    PRIMARY KEY(id_disrtict),
+    UNIQUE KEY(id)
 ) ENGINE=innodb  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS regions
@@ -68,7 +78,8 @@ CREATE TABLE IF NOT EXISTS regions
     status enum('ENABLE','DISABLE') NOT NULL DEFAULT 'ENABLE',
     created_at DATETIME,
     updated_at DATETIME,
-    PRIMARY KEY(id_region)
+    PRIMARY KEY(id_region),
+    UNIQUE KEY(id)
 ) ENGINE=innodb  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS addresses
@@ -131,17 +142,17 @@ ALTER TABLE addresses
     
 ALTER TABLE districts
     ADD    FOREIGN KEY (region_id)
-    REFERENCES regions(id_region)
+    REFERENCES regions(id)
 ;
     
 ALTER TABLE districts
     ADD    FOREIGN KEY (province_id)
-    REFERENCES provinces(id_province)
+    REFERENCES provinces(id)
 ;
     
 ALTER TABLE provinces
     ADD    FOREIGN KEY (region_id)
-    REFERENCES regions(id_region)
+    REFERENCES regions(id)
 ;
     
 ALTER TABLE contacts
@@ -150,9 +161,7 @@ ALTER TABLE contacts
 ;
     
 ALTER TABLE patients
-    ADD    FOREIGN KEY (contact_id)
-    REFERENCES contact(id_contact)
-;
-    
+    ADD   FOREIGN KEY (contact_id)
+    REFERENCES contacts(id_contact);    
 
 # Create Indexes
