@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS users (
   activated_date datetime DEFAULT NULL,
   modified_date datetime DEFAULT NULL,
   last_login datetime DEFAULT NULL,
+  created_by int unsigned NOT NULL,
   status enum('ENABLE','DISABLE') NOT NULL DEFAULT 'ENABLE',
   PRIMARY KEY (id_user),
   UNIQUE KEY unique_id (id),

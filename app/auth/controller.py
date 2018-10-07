@@ -131,7 +131,7 @@ class authController(object):
                 password_confirm = request.form.get('password_confirm')
                 if password != '':
                     if password == password_confirm:
-                        result = USERS.newUser(name, last_name, mail, username, password)
+                        result = USERS.newUser(name, last_name, mail, username, password, current_user.id_user)
                         if result['result'] is True:
                             flash('Usuario guardado', 'success')
                             return  redirect(url_for('auth.user_edit', id_user= result['id_user']))
