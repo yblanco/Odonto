@@ -33,6 +33,7 @@ class USERS(db.Model, UserMixin):
     activated_date = db.Column(db.DateTime, nullable=True)
     modified_date = db.Column(db.DateTime, nullable=True)
     last_login = db.Column(db.DateTime, nullable=True)
+    created_by = db.Column(db.DateTime, nullable=True)
     status = db.Column(db.String(7), nullable=False, default='ENABLE')
     status_name = db.relationship('STATUS', backref='users', lazy=True)
 
@@ -40,7 +41,7 @@ class USERS(db.Model, UserMixin):
         return self.name[0]+'. '+self.last_name
 
 
-    def __init__(self,name,last_name,mail,username, password):
+    def __init__(self,name,last_name,mail,username, password, created_by):
         self.id = self.randomId()
         self.name = name
         self.last_name = last_name
@@ -50,6 +51,7 @@ class USERS(db.Model, UserMixin):
         self.password = self.hashPassword(password)
         self.registered_date = datetime.datetime.now()
         self.activated_date = datetime.datetime.now()
+        self.created_by = created_by
         self.modified_date = datetime.datetime.now()
         self.last_login = datetime.datetime.now()
     
@@ -87,16 +89,16 @@ class USERS(db.Model, UserMixin):
         if self.existAdmin() is not True:
             try:    
                 password = self.randomString()
-                newUser = self.newUser('Administrador', 'De Sistema', 'admin@admin', 'admin', password)
+                newUser = self.newUser('Administrador', 'De Sistema', 'admin@admin', 'admin', password, 1)
                 if newUser['result']:
-                    result['result'] = True
                     result['msg'] = 'Usuario creado correctamente'
-                    result['username'] = add.username
+                    result['username'] = newUser['username']
                     result['password'] = password
+                    result['result'] = True
                 else:
                     result['msg'] = newUser['msg']
             except Exception as e:
-                db.session.rollback()
+                print 'ERROR auth.models.createAdmin: ', str(e)
                 result['msg']  = str(e)
         return result
 
@@ -174,16 +176,17 @@ class USERS(db.Model, UserMixin):
             return result
 
     @classmethod
-    def newUser(self, name, last_name, mail, username, password):
+    def newUser(self, name, last_name, mail, username, password, created_by):
         result = dict(
             result=False,
             msg='Error guardando el Usuario')
         try:
             check = USERS.query.filter((USERS.username == username) | (USERS.mail == mail)).count()
             if check == 0:
-                new = USERS(name, last_name, mail, username, password)
+                new = USERS(name, last_name, mail, username, password, created_by)
                 db.session.add(new)
                 db.session.commit()
+                result['username'] = new.username
                 result['id_user'] = new.id_user
                 result['result'] = True
                 result['msg'] = 'Success'
